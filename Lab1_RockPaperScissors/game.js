@@ -40,6 +40,17 @@ const aiChoices = [`rock`,`paper`,`scissors`]
 const maxFails = 2;
 var currentFails = 0;
 
+var winsInRow = 0;
+var tiesInRow = 0;
+
+var achievements = [[`First One`,false],
+[`Double Kill`,false],
+[`Triple Kill`,false],
+[`God Like`, false],
+[`!RAMPAGE!`,false],
+[`Close one!`,false],
+[`Oh, cmon!`,false]]
+
 var highScoreTable = [[`Vlad`, 25],[`Ivan`, 15],[`Vasiliy`,5]];
 
 var timeout = 3000;
@@ -140,6 +151,7 @@ function roundEnd(choice){
   
     if (aiChoices.includes(choice.toLowerCase())){
         if(choice.toLowerCase() == aiCurrentMove){
+            tiesInRow+=1;
             console.log(`
 
                     |Your ${choice.toLowerCase()} VS AI's ${aiCurrentMove}|
@@ -163,6 +175,15 @@ function roundEnd(choice){
             (choice.toLowerCase() == 'scisors' && aiCurrentMove =='paper') ||
             (choice.toLowerCase() == 'paper' && aiCurrentMove =='rock')
         ){
+            tiesInRow = 0;
+            winsInRow+=1;
+            
+            if(currentFails==3){
+                triggerAchivement(6);
+            }
+            
+            currentFails = 0;
+            checkAchivement();
             console.log(`
             
                   |Your ${choice.toLowerCase()} VS AI's ${aiCurrentMove}|
@@ -181,7 +202,7 @@ function roundEnd(choice){
 
                 },2000);
             Player.score+=1;
-            currentFails = 0;
+            
             newRound();
         }else{
             if(currentFails==maxFails){
@@ -213,7 +234,9 @@ function roundEnd(choice){
                 },10000)
                 
             }else{
-
+                winsInRow = 0;
+                tiesInRow = 0;
+                currentFails+=1;
             console.log(`
             
                   |Your ${choice.toLowerCase()} VS AI's ${aiCurrentMove}|
@@ -232,7 +255,7 @@ function roundEnd(choice){
 
                 },timeout/3*2);
             AI.score+=1;
-            currentFails+=1;
+            
             
 
             newRound();
@@ -253,14 +276,64 @@ function roundEnd(choice){
     }
 }
 
-function showAchievements(){
-    setTimeout(function(){
+function checkAchivement(){
+    switch (winsInRow){
+        case 1: triggerAchivement(1); break;
+        case 2: triggerAchivement(2); break;
+        case 3: triggerAchivement(3); break;
+        case 4: triggerAchivement(4); break;
+        case 5: triggerAchivement(5); break;
+
+        default:  break;
+    }
+
+    switch (tiesInRow){
+        case 3: triggerAchivement(7); break;
+    }
+}
+
+function triggerAchivement(number){
+    if(!achievements[number-1][1]){
+        achievements[number-1][1] = true;
         console.log(`
-    INVALID COMMAND! Use rock,paper,scissors or achievements
-            ||||||||||||||||||||||||
-            |${timeout/1000 * 2} seconds till re-play|    
-            `);
-    },timeout*2)
+        --------ACHIEVEMENT "${achievements[number-1][0]}" UNLOCKED!---------
+        `);
+    }
+}
+
+function showAchievements(){
+    var achievementChecker = false;
+
+    for( var i = 0; i < achievements.length; i++ ) {
+        if( achievements[i][1] == true ) {
+            achievementChecker = true;
+            break;
+        }
+    }
+    if(achievementChecker){
+        console.log(`
+    -----------------UNLOCKED ACHIEVEMENTS----------------    
+        `);
+        for(x = 0; x<achievements.length; x++){
+            if(achievements[x][1]){
+                console.log(`
+                    +${achievements[x][0]}
+                `);
+            }
+        }
+    }else{
+        console.log(`
+    -------------YOU HAVE NO ACHIEVEMENTS YET!-------------    
+        `);
+    }
+
+    console.log(`
+    ------------NEW ROUND WILL START IN 5 SECONDS----------
+    `);
+    
+    setTimeout(function(){
+        newRound();
+    },5000)
 }
 
 /**
