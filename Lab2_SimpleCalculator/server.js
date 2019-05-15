@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Lab 2 - Simple Calculator
  * Vladimir Vatsuirn
@@ -15,3 +16,5 @@ const handleHttpCalculation = require('./math');
 app.get('/', handleHttpCalculation);
 app.listen(PORT);
 console.log(`Your application is running on https://localhost:${PORT}`);
+=======
+>>>>>>> parent of 03822fb... Calculator is made :)
