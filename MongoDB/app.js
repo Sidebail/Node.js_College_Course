@@ -3,6 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose'); //Require in Mongoose for connection to MongoDB
+mongoose.connect(`mongodb+srv://test:test123@jscoursecluster-eyi2w.mongodb.net/test?retryWrites=true&w=majority`, 
+{
+  useNewUrlParser: true //Include this so we dont get deprecation warning
+});
+
+var db = mongoose.connection;
+db.on('error', err=> console.error(err));
+db.once('open',()=> console.log('Conection to mobgoose succesfull'));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
