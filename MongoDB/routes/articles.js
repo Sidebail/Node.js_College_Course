@@ -45,13 +45,21 @@ router.post('/create', async(req,res)=>{
     //Redirect to the newly created Article
     res.redirect(`/articles/${article._id}`);
 });
+
+router.get('/:id/update',async(req,res) => {
+    const id = req.params.id;
+
+    const article = await Article.findById(id);
+
+    res.render('articles/update',{article});
+});
  
 router.post('/:id/update', async(req,res)=>{
     const id = req.params.id;
     const body = req.body;
 
     //Create a new Article based on submission
-    const newArticle = Article.findByIdAndUpdate(id, body);
+    const article = await Article.findByIdAndUpdate(id, body);
 
     //Redirect to the newly created Article
     res.redirect(`/articles/${article._id}`);
