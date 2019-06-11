@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const classSchema = new Sche({
+const classSchema = new Schema({
     teacher: String,
     courseCode: String,
     title: String
