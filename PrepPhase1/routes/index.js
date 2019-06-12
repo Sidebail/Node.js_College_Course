@@ -7,18 +7,19 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-/** List all projects */
-router.get("/projects", projects.findAllProjects);
-/** List a specific project */
+// List all Projects (GET)
+router.get('/projects', projects.findAllProjects);
+// List a specific Project (GET)
 router.get('/projects/:id', projects.findProjectById);
-/** Render create form (GET)*/
 
-/** Handle Create form (POST)*/
+// Render create form (GET)
+router.get('/projects/new', (req, res) => res.render('projects/create'));
+// Handle create form (POST)
 router.post('/projects/new', projects.createNewProject);
-/** Render edit form (GET) */
-
-/** Handle edit form (POST) */
+// Render edit form (GET)
+// Handle edit form (POST)
 router.post('/projects/:id/edit', projects.updateProjectById);
-/** Delete a project (GET) */
+// Delete a Project (GET)
 router.get('/projects/:id/delete', projects.deleteProjectById);
+
 module.exports = router;
